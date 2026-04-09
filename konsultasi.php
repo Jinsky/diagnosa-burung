@@ -18,10 +18,10 @@ $categories = [
     <header class="mb-16 relative">
         <div class="max-w-2xl">
             <span class="inline-flex items-center px-3 py-1 rounded-full bg-primary-container text-on-primary-container text-xs font-bold uppercase tracking-widest mb-4">
-                Diagnostic Tool
+                Alat Diagnostik
             </span>
             <h1 class="font-headline text-5xl md:text-6xl font-extrabold text-primary tracking-tighter leading-tight mb-6">
-                Avian Symptom <span class="text-on-surface-variant/40 italic">Precision Analysis.</span>
+                Gejala Avian <span class="text-on-surface-variant/40 italic">Analisis Presisi.</span>
             </h1>
             <p class="text-on-surface-variant text-lg leading-relaxed max-w-xl">
                 Gunakan kerangka diagnostik tervalidasi pakar kami untuk mengidentifikasi potensi risiko kesehatan pada merpati Anda. Pilih semua gejala yang teramati untuk laporan presisi segera.
@@ -54,7 +54,7 @@ $categories = [
                 ?>
                 <label class="group flex items-center p-4 bg-surface-container-lowest rounded-lg cursor-pointer border border-transparent hover:border-primary/20 transition-all">
                     <input name="gejala[]" value="<?= $g['id'] ?>" class="custom-checkbox w-6 h-6 rounded border-surface-container-highest text-primary focus:ring-primary transition-all" type="checkbox"/>
-                    <span class="ml-4 text-on-surface font-semibold"><?= $g['nama'] ?></span>
+                    <span class="ml-4 text-on-surface font-semibold">[<?= $g['id'] ?>] <?= $g['nama'] ?></span>
                 </label>
                 <?php
                     endif;
@@ -79,7 +79,7 @@ $categories = [
                 <?php foreach ($uncategorized as $g): ?>
                 <label class="group flex items-center p-4 bg-surface-container-lowest rounded-lg cursor-pointer border border-transparent hover:border-primary/20 transition-all">
                     <input name="gejala[]" value="<?= $g['id'] ?>" class="custom-checkbox w-6 h-6 rounded border-surface-container-highest text-primary focus:ring-primary transition-all" type="checkbox"/>
-                    <span class="ml-4 text-on-surface font-semibold"><?= $g['nama'] ?></span>
+                    <span class="ml-4 text-on-surface font-semibold">[<?= $g['id'] ?>] <?= $g['nama'] ?></span>
                 </label>
                 <?php endforeach; ?>
             </div>
@@ -89,7 +89,7 @@ $categories = [
         <!-- Action Area -->
         <div class="mt-20 flex flex-col md:flex-row items-center justify-between p-10 bg-primary rounded-xl overflow-hidden relative">
             <div class="relative z-10 text-center md:text-left mb-8 md:mb-0">
-                <h3 class="font-headline text-3xl font-extrabold text-on-primary mb-2">Ready for Diagnosis?</h3>
+                <h3 class="font-headline text-3xl font-extrabold text-on-primary mb-2">Siap untuk Diagnosa?</h3>
                 <p class="text-on-primary/80 max-w-sm">Algoritma klinis kami akan menganalisis pilihan Anda terhadap basis pengetahuan penyakit avian.</p>
             </div>
             <button type="submit" class="relative z-10 bg-on-primary text-primary hover:bg-primary-container px-12 py-5 rounded-full font-headline font-black text-xl tracking-tight transition-all active:scale-95 shadow-xl">

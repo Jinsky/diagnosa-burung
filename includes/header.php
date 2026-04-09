@@ -102,14 +102,14 @@
                 <a href="index.php">The Clinical Naturalist</a>
             </div>
             <div class="hidden md:flex gap-8 items-center">
-                <a class="font-headline font-bold <?= basename($_SERVER['PHP_SELF']) == 'konsultasi.php' ? 'text-primary border-b-2 border-primary pb-1' : 'text-on-surface-variant/70 hover:text-primary transition-all duration-300' ?>" href="konsultasi.php">Consultation</a>
-                <a class="font-headline font-bold <?= basename($_SERVER['PHP_SELF']) == 'katalog.php' ? 'text-primary border-b-2 border-primary pb-1' : 'text-on-surface-variant/70 hover:text-primary transition-all duration-300' ?>" href="katalog.php">Disease Catalog</a>
-                <a class="font-headline font-bold <?= basename($_SERVER['PHP_SELF']) == 'riwayat.php' ? 'text-primary border-b-2 border-primary pb-1' : 'text-on-surface-variant/70 hover:text-primary transition-all duration-300' ?>" href="riwayat.php">History</a>
-                <a class="font-headline font-bold text-on-surface-variant/70 hover:text-primary transition-all duration-300" href="#">About</a>
+                <a class="font-headline font-bold <?= basename($_SERVER['PHP_SELF']) == 'konsultasi.php' ? 'text-primary border-b-2 border-primary pb-1' : 'text-on-surface-variant/70 hover:text-primary transition-all duration-300' ?>" href="konsultasi.php">Konsultasi</a>
+                <a class="font-headline font-bold <?= basename($_SERVER['PHP_SELF']) == 'katalog.php' ? 'text-primary border-b-2 border-primary pb-1' : 'text-on-surface-variant/70 hover:text-primary transition-all duration-300' ?>" href="katalog.php">Katalog Penyakit</a>
+                <a class="font-headline font-bold <?= basename($_SERVER['PHP_SELF']) == 'riwayat.php' ? 'text-primary border-b-2 border-primary pb-1' : 'text-on-surface-variant/70 hover:text-primary transition-all duration-300' ?>" href="riwayat.php">Riwayat</a>
+                <a class="font-headline font-bold text-on-surface-variant/70 hover:text-primary transition-all duration-300" href="#">Tentang</a>
             </div>
             <div class="flex items-center gap-4">
                 <a href="konsultasi.php" class="px-6 py-2 bg-primary text-on-primary font-headline font-bold rounded-lg hover:bg-primary-dim transition-colors active:scale-95 duration-150">
-                    Emergency Check
+                    Cek Darurat
                 </a>
             </div>
         </div>
