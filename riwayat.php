@@ -30,7 +30,7 @@ $riwayat = get_riwayat($pdo);
             <div class="col-span-2">Tanggal</div>
             <div class="col-span-3">Identitas Merpati</div>
             <div class="col-span-3">Diagnosa Penyakit</div>
-            <div class="col-span-2 text-center">Confidence</div>
+            <div class="col-span-2 text-center">Tingkat Kepercayaan</div>
             <div class="col-span-2 text-right">Aksi</div>
         </div>
 
