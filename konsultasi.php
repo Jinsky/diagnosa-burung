@@ -21,7 +21,7 @@ $categories = [
                 Alat Diagnostik
             </span>
             <h1 class="font-headline text-5xl md:text-6xl font-extrabold text-primary tracking-tighter leading-tight mb-6">
-                Gejala Avian <span class="text-on-surface-variant/40 italic">Analisis Presisi.</span>
+                Gejala Burung Merpati <span class="text-on-surface-variant/40 italic">Analisis Presisi.</span>
             </h1>
             <p class="text-on-surface-variant text-lg leading-relaxed max-w-xl">
                 Gunakan kerangka diagnostik tervalidasi pakar kami untuk mengidentifikasi potensi risiko kesehatan pada merpati Anda. Pilih semua gejala yang teramati untuk laporan presisi segera.
@@ -37,53 +37,53 @@ $categories = [
         </div>
 
         <?php foreach ($categories as $cat_name => $cat_ids): ?>
-        <section class="bg-surface-container-low rounded-xl p-8 md:p-10">
-            <div class="flex items-center gap-3 mb-8">
-                <div class="w-12 h-12 rounded-lg bg-surface-container-lowest flex items-center justify-center shadow-sm">
-                    <span class="material-symbols-outlined text-primary">medical_services</span>
+            <section class="bg-surface-container-low rounded-xl p-8 md:p-10">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-12 h-12 rounded-lg bg-surface-container-lowest flex items-center justify-center shadow-sm">
+                        <span class="material-symbols-outlined text-primary">medical_services</span>
+                    </div>
+                    <div>
+                        <h2 class="font-headline text-2xl font-extrabold text-on-surface tracking-tight"><?= $cat_name ?></h2>
+                    </div>
                 </div>
-                <div>
-                    <h2 class="font-headline text-2xl font-extrabold text-on-surface tracking-tight"><?= $cat_name ?></h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <?php
+                    foreach ($gejala_list as $g) {
+                        if (in_all_categories($g['id'], $categories) && !in_array($g['id'], $cat_ids)) continue;
+                        if (in_array($g['id'], $cat_ids)):
+                    ?>
+                            <label class="group flex items-center p-4 bg-surface-container-lowest rounded-lg cursor-pointer border border-transparent hover:border-primary/20 transition-all">
+                                <input name="gejala[]" value="<?= $g['id'] ?>" class="custom-checkbox w-6 h-6 rounded border-surface-container-highest text-primary focus:ring-primary transition-all" type="checkbox" />
+                                <span class="ml-4 text-on-surface font-semibold">[<?= $g['id'] ?>] <?= $g['nama'] ?></span>
+                            </label>
+                    <?php
+                        endif;
+                    }
+                    ?>
                 </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <?php
-                foreach ($gejala_list as $g) {
-                    if (in_all_categories($g['id'], $categories) && !in_array($g['id'], $cat_ids)) continue;
-                    if (in_array($g['id'], $cat_ids)):
-                ?>
-                <label class="group flex items-center p-4 bg-surface-container-lowest rounded-lg cursor-pointer border border-transparent hover:border-primary/20 transition-all">
-                    <input name="gejala[]" value="<?= $g['id'] ?>" class="custom-checkbox w-6 h-6 rounded border-surface-container-highest text-primary focus:ring-primary transition-all" type="checkbox"/>
-                    <span class="ml-4 text-on-surface font-semibold">[<?= $g['id'] ?>] <?= $g['nama'] ?></span>
-                </label>
-                <?php
-                    endif;
-                }
-                ?>
-            </div>
-        </section>
+            </section>
         <?php endforeach; ?>
 
         <!-- Gejala Lainnya (not in categories) -->
         <?php
         $uncategorized = [];
         $all_cat_ids = [];
-        foreach($categories as $c) $all_cat_ids = array_merge($all_cat_ids, $c);
-        foreach($gejala_list as $g) if(!in_array($g['id'], $all_cat_ids)) $uncategorized[] = $g;
+        foreach ($categories as $c) $all_cat_ids = array_merge($all_cat_ids, $c);
+        foreach ($gejala_list as $g) if (!in_array($g['id'], $all_cat_ids)) $uncategorized[] = $g;
 
         if (!empty($uncategorized)):
         ?>
-        <section class="bg-surface-container-low rounded-xl p-8 md:p-10">
-            <h2 class="font-headline text-2xl font-extrabold text-on-surface tracking-tight mb-8">Gejala Lainnya</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <?php foreach ($uncategorized as $g): ?>
-                <label class="group flex items-center p-4 bg-surface-container-lowest rounded-lg cursor-pointer border border-transparent hover:border-primary/20 transition-all">
-                    <input name="gejala[]" value="<?= $g['id'] ?>" class="custom-checkbox w-6 h-6 rounded border-surface-container-highest text-primary focus:ring-primary transition-all" type="checkbox"/>
-                    <span class="ml-4 text-on-surface font-semibold">[<?= $g['id'] ?>] <?= $g['nama'] ?></span>
-                </label>
-                <?php endforeach; ?>
-            </div>
-        </section>
+            <section class="bg-surface-container-low rounded-xl p-8 md:p-10">
+                <h2 class="font-headline text-2xl font-extrabold text-on-surface tracking-tight mb-8">Gejala Lainnya</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <?php foreach ($uncategorized as $g): ?>
+                        <label class="group flex items-center p-4 bg-surface-container-lowest rounded-lg cursor-pointer border border-transparent hover:border-primary/20 transition-all">
+                            <input name="gejala[]" value="<?= $g['id'] ?>" class="custom-checkbox w-6 h-6 rounded border-surface-container-highest text-primary focus:ring-primary transition-all" type="checkbox" />
+                            <span class="ml-4 text-on-surface font-semibold">[<?= $g['id'] ?>] <?= $g['nama'] ?></span>
+                        </label>
+                    <?php endforeach; ?>
+                </div>
+            </section>
         <?php endif; ?>
 
         <!-- Action Area -->
@@ -101,8 +101,9 @@ $categories = [
 </main>
 
 <?php
-function in_all_categories($id, $categories) {
-    foreach($categories as $c) if(in_array($id, $c)) return true;
+function in_all_categories($id, $categories)
+{
+    foreach ($categories as $c) if (in_array($id, $c)) return true;
     return false;
 }
 include 'includes/footer.php';

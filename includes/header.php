@@ -99,9 +99,10 @@
     <nav class="fixed top-0 w-full z-50 bg-[#f9f9f9]/80 backdrop-blur-xl shadow-[0_12px_32px_rgba(80,101,42,0.08)]">
         <div class="flex justify-between items-center w-full px-8 py-4 max-w-screen-2xl mx-auto">
             <div class="text-xl font-black text-primary uppercase tracking-tighter font-headline">
-                <a href="index.php">The Clinical Naturalist</a>
+                <a href="index.php">Diagnosa Burung</a>
             </div>
             <div class="hidden md:flex gap-8 items-center">
+                <a class="font-headline font-bold <?= basename($_SERVER['PHP_SELF']) == 'index.php' ? 'text-primary border-b-2 border-primary pb-1' : 'text-on-surface-variant/70 hover:text-primary transition-all duration-300' ?>" href="index.php">Beranda</a>
                 <a class="font-headline font-bold <?= basename($_SERVER['PHP_SELF']) == 'konsultasi.php' ? 'text-primary border-b-2 border-primary pb-1' : 'text-on-surface-variant/70 hover:text-primary transition-all duration-300' ?>" href="konsultasi.php">Konsultasi</a>
                 <a class="font-headline font-bold <?= basename($_SERVER['PHP_SELF']) == 'katalog.php' ? 'text-primary border-b-2 border-primary pb-1' : 'text-on-surface-variant/70 hover:text-primary transition-all duration-300' ?>" href="katalog.php">Katalog Penyakit</a>
                 <a class="font-headline font-bold <?= basename($_SERVER['PHP_SELF']) == 'riwayat.php' ? 'text-primary border-b-2 border-primary pb-1' : 'text-on-surface-variant/70 hover:text-primary transition-all duration-300' ?>" href="riwayat.php">Riwayat</a>
