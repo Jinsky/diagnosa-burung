@@ -5,10 +5,10 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         <div class="lg:col-span-6 space-y-8 relative z-10">
             <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-bold tracking-widest uppercase font-label">
-                <span class="material-symbols-outlined text-sm">verified</span> Precision Avian Care
+                <span class="material-symbols-outlined text-sm">verified</span> Perawatan Avian Presisi
             </div>
             <h1 class="text-5xl lg:text-7xl font-headline font-extrabold tracking-tight text-on-background leading-[1.1]">
-                Professional <span class="text-primary">Diagnostic</span> Intelligence.
+                Kecerdasan <span class="text-primary">Diagnostik</span> Profesional.
             </h1>
             <p class="text-lg text-on-surface-variant leading-relaxed max-w-xl">
                 Sistem pakar klinis yang dirancang khusus untuk kesehatan burung merpati. Menggabungkan observasi naturalis dengan algoritma presisi untuk deteksi dini penyakit avian.
@@ -33,10 +33,10 @@
                     <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-primary">
                         <span class="material-symbols-outlined">health_metrics</span>
                     </div>
-                    <span class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Live Accuracy</span>
+                    <span class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Akurasi Langsung</span>
                 </div>
                 <div class="text-3xl font-headline font-black text-primary">98.4%</div>
-                <p class="text-xs text-on-surface-variant mt-1">Diagnostic precision across 10 common avian pathologies.</p>
+                <p class="text-xs text-on-surface-variant mt-1">Presisi diagnostik di 10 patologi avian umum.</p>
             </div>
         </div>
     </div>
@@ -46,7 +46,7 @@
 <section class="bg-surface-container-low py-24 px-8">
     <div class="max-w-screen-2xl mx-auto">
         <div class="mb-16 max-w-2xl">
-            <h2 class="text-3xl font-headline font-extrabold text-on-background mb-6">Forward Chaining Method</h2>
+            <h2 class="text-3xl font-headline font-extrabold text-on-background mb-6">Metode Forward Chaining</h2>
             <p class="text-on-surface-variant leading-relaxed">
                 Kami menggunakan pendekatan <span class="font-bold text-on-background italic">Data-Driven Inference</span>. Proses dimulai dari observasi gejala spesifik yang dialami merpati Anda, yang kemudian diolah melalui mesin inferensi untuk mencapai kesimpulan diagnosis yang akurat.
             </p>
@@ -90,11 +90,11 @@
         </div>
         <div class="bg-surface-container-high rounded-3xl p-8 flex flex-col justify-between">
             <span class="material-symbols-outlined text-4xl text-primary">biotech</span>
-            <div class="text-sm font-bold uppercase tracking-tighter text-on-surface-variant">Advanced Research</div>
+            <div class="text-sm font-bold uppercase tracking-tighter text-on-surface-variant">Penelitian Lanjut</div>
         </div>
         <div class="bg-surface-container-high rounded-3xl p-8 flex flex-col justify-between">
             <span class="material-symbols-outlined text-4xl text-primary">diversity_1</span>
-            <div class="text-sm font-bold uppercase tracking-tighter text-on-surface-variant">Community Expert</div>
+            <div class="text-sm font-bold uppercase tracking-tighter text-on-surface-variant">Pakar Komunitas</div>
         </div>
     </div>
 </section>

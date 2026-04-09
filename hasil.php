@@ -8,6 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $nama_merpati = $_POST['nama_merpati'] ?? 'Unnamed';
 $selected_gejala = $_POST['gejala'] ?? [];
+sort($selected_gejala);
 
 $diagnosis = get_diagnosa($pdo, $selected_gejala);
 
@@ -22,9 +23,9 @@ include 'includes/header.php';
     <!-- Header Section -->
     <header class="mb-12">
         <span class="inline-block px-4 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-semibold mb-4">
-            Analysis Complete
+            Analisis Selesai
         </span>
-        <h1 class="text-4xl md:text-5xl font-black tracking-tight text-primary mb-4 leading-none">Diagnosis Result</h1>
+        <h1 class="text-4xl md:text-5xl font-black tracking-tight text-primary mb-4 leading-none">Hasil Diagnosa</h1>
         <p class="text-on-surface-variant max-w-2xl text-lg leading-relaxed">
             Identitas Merpati: <strong><?= htmlspecialchars($nama_merpati) ?></strong><br>
             Berdasarkan analisis forward chaining dari tanda-tanda klinis yang diamati.
@@ -42,12 +43,12 @@ include 'includes/header.php';
                             <h2 class="text-3xl font-extrabold text-on-surface mb-2"><?= $diagnosis['nama'] ?></h2>
                             <div class="flex items-center gap-2 text-on-surface-variant">
                                 <span class="material-symbols-outlined text-primary">verified</span>
-                                <span class="text-sm font-semibold tracking-wide uppercase">High Probability Factor</span>
+                                <span class="text-sm font-semibold tracking-wide uppercase">Faktor Probabilitas Tinggi</span>
                             </div>
                         </div>
                         <div class="flex flex-col items-center justify-center p-6 bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(80,101,42,0.08)] min-w-[140px]">
                             <span class="text-4xl font-black text-primary"><?= $diagnosis['confidence'] ?>%</span>
-                            <span class="text-[10px] font-bold text-on-surface-variant tracking-widest uppercase mt-1">Confidence</span>
+                            <span class="text-[10px] font-bold text-on-surface-variant tracking-widest uppercase mt-1">Tingkat Kepercayaan</span>
                         </div>
                     </div>
 
@@ -103,7 +104,7 @@ include 'includes/header.php';
             <div class="bg-error-container/10 border border-error/20 p-6 rounded-xl flex items-start gap-4">
                 <span class="material-symbols-outlined text-error mt-1">warning</span>
                 <div>
-                    <p class="text-on-error-container font-bold text-sm">Medical Disclaimer</p>
+                    <p class="text-on-error-container font-bold text-sm">Sanggahan Medis</p>
                     <p class="text-on-error-container text-sm leading-relaxed">
                         Hasil ini bersifat informatif, segera hubungi dokter hewan jika gejala memburuk. Alat ini tidak menggantikan konsultasi profesional dokter hewan.
                     </p>
@@ -114,7 +115,7 @@ include 'includes/header.php';
         <!-- Sidebar -->
         <aside class="lg:col-span-4 space-y-6">
             <div class="bg-surface-container-low rounded-xl p-6">
-                <h3 class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-6">Expert Verification</h3>
+                <h3 class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-6">Verifikasi Pakar</h3>
                 <div class="flex items-center gap-4 mb-6">
                     <img alt="Expert" class="w-12 h-12 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbDvhPbuXi4H-OSE2CB3aoa-MurHwCPM8_8iBKsxm5cWyr5I0MZY2j1Ud25G8NX6aBkNx-qn8pHTDlfoRqt5t7BiDj7sNhzjpabENFWbZwaplVhtJVnC7DbHuyeCxJrTPegac4I23iLxx5YQBEDLuXDZE9NddXzKVMGA1lI0-cAoF_vHiE1RuUN2_enM1lWF_Icn4uXTwmv6GMBDi1cw24kaeU5sPln23OXZOnSXarNxPomT9aXNE6YxzW_2LvRDvjOullGLBeKmDT"/>
                     <div>
@@ -124,18 +125,18 @@ include 'includes/header.php';
                 </div>
                 <div class="space-y-4">
                     <div class="flex justify-between items-center text-sm py-2 border-b border-surface-variant/30">
-                        <span class="text-on-surface-variant">Engine</span>
+                        <span class="text-on-surface-variant">Sistem</span>
                         <span class="text-on-surface">F-Chain v4.2</span>
                     </div>
                     <div class="flex justify-between items-center text-sm py-2 border-b border-surface-variant/30">
-                        <span class="text-on-surface-variant">Date</span>
-                        <span class="text-on-surface"><?= date('M d, Y') ?></span>
+                        <span class="text-on-surface-variant">Tanggal</span>
+                        <span class="text-on-surface"><?= date('d M Y') ?></span>
                     </div>
                 </div>
             </div>
 
             <div class="bg-inverse-surface text-surface rounded-xl p-6 relative overflow-hidden">
-                <h3 class="font-bold mb-4">Symptom Matching</h3>
+                <h3 class="font-bold mb-4 text-surface">Kecocokan Gejala</h3>
                 <div class="space-y-3">
                     <?php
                     $gejala_all = get_all_gejala($pdo);
@@ -144,7 +145,7 @@ include 'includes/header.php';
                     ?>
                     <div class="flex items-center gap-3">
                         <span class="w-2 h-2 rounded-full bg-primary"></span>
-                        <span class="text-sm"><?= $g['nama'] ?></span>
+                        <span class="text-sm">[<?= $g['id'] ?>] <?= $g['nama'] ?></span>
                     </div>
                     <?php
                         endif;
