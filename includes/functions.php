@@ -12,10 +12,10 @@ function get_all_gejala($pdo) {
 
 /**
  * Forward Chaining Algorithm
- * Returns the matched disease based on selected symptoms
+ * Returns all diseases with match percentages based on selected symptoms
  */
 function get_diagnosa($pdo, $selected_gejala) {
-    if (!$pdo || empty($selected_gejala)) return null;
+    if (!$pdo || empty($selected_gejala)) return [];
 
     // Fetch all rules and their associated symptoms
     $stmt = $pdo->query("
@@ -32,38 +32,41 @@ function get_diagnosa($pdo, $selected_gejala) {
         $rules[$row['id_aturan']]['gejala'][] = $row['id_gejala'];
     }
 
-    $best_match = null;
-    $max_match_count = 0;
+    $disease_confidence = [];
 
     foreach ($rules as $rule_id => $rule_data) {
         $rule_gejala = $rule_data['gejala'];
+        $id_penyakit = $rule_data['id_penyakit'];
 
         // Count how many symptoms of this rule are present in the selected symptoms
         $intersection = array_intersect($rule_gejala, $selected_gejala);
         $match_count = count($intersection);
         $total_rule_gejala = count($rule_gejala);
 
-        // Forward Chaining condition: all symptoms in the rule must be present
-        if ($match_count === $total_rule_gejala) {
-            // If multiple rules match, we can return the one with the most symptoms (more specific)
-            if ($match_count > $max_match_count) {
-                $max_match_count = $match_count;
-                $best_match = $rule_data['id_penyakit'];
+        if ($match_count > 0) {
+            $confidence = ($match_count / $total_rule_gejala) * 100;
+            if (!isset($disease_confidence[$id_penyakit]) || $confidence > $disease_confidence[$id_penyakit]) {
+                $disease_confidence[$id_penyakit] = $confidence;
             }
         }
     }
 
-    if ($best_match) {
+    if (empty($disease_confidence)) return [];
+
+    arsort($disease_confidence);
+
+    $results = [];
+    foreach ($disease_confidence as $id_penyakit => $confidence) {
         $stmt = $pdo->prepare("SELECT * FROM penyakit WHERE id = ?");
-        $stmt->execute([$best_match]);
+        $stmt->execute([$id_penyakit]);
         $penyakit = $stmt->fetch();
         if ($penyakit) {
-            $penyakit['confidence'] = 100;
+            $penyakit['confidence'] = round($confidence, 2);
+            $results[] = $penyakit;
         }
-        return $penyakit;
     }
 
-    return null;
+    return $results;
 }
 
 /**
