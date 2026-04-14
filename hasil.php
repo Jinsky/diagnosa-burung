@@ -10,7 +10,8 @@ $nama_merpati = $_POST['nama_merpati'] ?? 'Unnamed';
 $selected_gejala = $_POST['gejala'] ?? [];
 sort($selected_gejala);
 
-$diagnosis = get_diagnosa($pdo, $selected_gejala);
+$diagnoses = get_diagnosa($pdo, $selected_gejala);
+$diagnosis = !empty($diagnoses) ? $diagnoses[0] : null;
 
 if ($diagnosis) {
     save_diagnosa($pdo, $nama_merpati, $diagnosis['id'], $selected_gejala, $diagnosis['confidence']);
@@ -110,6 +111,32 @@ include 'includes/header.php';
                     </p>
                 </div>
             </div>
+
+            <?php if (count($diagnoses) > 1): ?>
+            <!-- Other Possibilities -->
+            <section class="bg-surface-container-low rounded-xl p-8 border border-primary/10">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="material-symbols-outlined text-primary">clinical_notes</span>
+                    <h3 class="font-headline text-2xl font-extrabold text-on-surface tracking-tight">Kemungkinan Lainnya</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <?php foreach (array_slice($diagnoses, 1) as $alt): ?>
+                    <div class="bg-surface-container-lowest p-5 rounded-lg border border-on-surface/5 flex justify-between items-center group hover:border-primary/20 transition-all">
+                        <div>
+                            <h4 class="font-bold text-on-surface group-hover:text-primary transition-colors"><?= $alt['nama'] ?></h4>
+                            <p class="text-xs text-on-surface-variant line-clamp-1"><?= $alt['deskripsi'] ?></p>
+                        </div>
+                        <div class="text-right ml-4">
+                            <span class="text-lg font-black text-primary"><?= $alt['confidence'] ?>%</span>
+                            <div class="w-16 bg-surface-container-high h-1 rounded-full mt-1 overflow-hidden">
+                                <div class="bg-primary h-full" style="width: <?= $alt['confidence'] ?>%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            </section>
+            <?php endif; ?>
         </div>
 
         <!-- Sidebar -->

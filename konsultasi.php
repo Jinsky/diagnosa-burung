@@ -4,6 +4,30 @@ include 'includes/header.php';
 
 $gejala_list = get_all_gejala($pdo);
 
+// Fetch rules for real-time analysis
+if (!$pdo) {
+    $rules_raw = [];
+} else {
+    $rules_stmt = $pdo->query("
+    SELECT a.id as id_aturan, a.id_penyakit, p.nama as nama_penyakit, ad.id_gejala
+    FROM aturan a
+    JOIN aturan_detail ad ON a.id = ad.id_aturan
+        JOIN penyakit p ON a.id_penyakit = p.id
+    ");
+    $rules_raw = $rules_stmt->fetchAll();
+}
+$rules_js = [];
+foreach ($rules_raw as $row) {
+    if (!isset($rules_js[$row['id_aturan']])) {
+        $rules_js[$row['id_aturan']] = [
+            'id_penyakit' => $row['id_penyakit'],
+            'nama_penyakit' => $row['nama_penyakit'],
+            'gejala' => []
+        ];
+    }
+    $rules_js[$row['id_aturan']]['gejala'][] = $row['id_gejala'];
+}
+
 // Grouping symptoms for better UI
 $categories = [
     'Gejala Fisik' => ['G01', 'G02', 'G06', 'G07', 'G08', 'G09', 'G15', 'G21', 'G22', 'G26', 'G30'],
@@ -30,13 +54,14 @@ $categories = [
     </header>
 
     <!-- Diagnostic Form -->
-    <form action="hasil.php" method="POST" class="space-y-12">
-        <div class="bg-surface-container-low rounded-xl p-8 md:p-10 mb-8">
-            <label class="block font-headline text-2xl font-extrabold text-on-surface tracking-tight mb-4">Nama Merpati / Identitas</label>
-            <input type="text" name="nama_merpati" required placeholder="Contoh: Merpati Pos A" class="w-full bg-surface-container-lowest border-none rounded-lg p-4 focus:ring-2 focus:ring-primary/20 text-on-surface">
-        </div>
+    <div class="lg:grid lg:grid-cols-12 lg:gap-8 items-start">
+        <form action="hasil.php" method="POST" class="space-y-12 lg:col-span-8">
+            <div class="bg-surface-container-low rounded-xl p-8 md:p-10 mb-8">
+                <label class="block font-headline text-2xl font-extrabold text-on-surface tracking-tight mb-4">Nama Merpati / Identitas</label>
+                <input type="text" name="nama_merpati" required placeholder="Contoh: Merpati Pos A" class="w-full bg-surface-container-lowest border-none rounded-lg p-4 focus:ring-2 focus:ring-primary/20 text-on-surface">
+            </div>
 
-        <?php foreach ($categories as $cat_name => $cat_ids): ?>
+            <?php foreach ($categories as $cat_name => $cat_ids): ?>
             <section class="bg-surface-container-low rounded-xl p-8 md:p-10">
                 <div class="flex items-center gap-3 mb-8">
                     <div class="w-12 h-12 rounded-lg bg-surface-container-lowest flex items-center justify-center shadow-sm">
@@ -86,18 +111,37 @@ $categories = [
             </section>
         <?php endif; ?>
 
-        <!-- Action Area -->
-        <div class="mt-20 flex flex-col md:flex-row items-center justify-between p-10 bg-primary rounded-xl overflow-hidden relative">
-            <div class="relative z-10 text-center md:text-left mb-8 md:mb-0">
-                <h3 class="font-headline text-3xl font-extrabold text-on-primary mb-2">Siap untuk Diagnosa?</h3>
-                <p class="text-on-primary/80 max-w-sm">Algoritma klinis kami akan menganalisis pilihan Anda terhadap basis pengetahuan penyakit avian.</p>
+            <!-- Action Area -->
+            <div class="mt-20 flex flex-col md:flex-row items-center justify-between p-10 bg-primary rounded-xl overflow-hidden relative">
+                <div class="relative z-10 text-center md:text-left mb-8 md:mb-0">
+                    <h3 class="font-headline text-3xl font-extrabold text-on-primary mb-2">Siap untuk Diagnosa?</h3>
+                    <p class="text-on-primary/80 max-w-sm">Algoritma klinis kami akan menganalisis pilihan Anda terhadap basis pengetahuan penyakit avian.</p>
+                </div>
+                <button type="submit" class="relative z-10 bg-on-primary text-primary hover:bg-primary-container px-12 py-5 rounded-full font-headline font-black text-xl tracking-tight transition-all active:scale-95 shadow-xl">
+                    Analisis Sekarang
+                </button>
+                <div class="absolute right-0 top-0 w-64 h-64 bg-primary-dim rounded-full blur-3xl opacity-50 -mr-32 -mt-32"></div>
             </div>
-            <button type="submit" class="relative z-10 bg-on-primary text-primary hover:bg-primary-container px-12 py-5 rounded-full font-headline font-black text-xl tracking-tight transition-all active:scale-95 shadow-xl">
-                Analisis Sekarang
-            </button>
-            <div class="absolute right-0 top-0 w-64 h-64 bg-primary-dim rounded-full blur-3xl opacity-50 -mr-32 -mt-32"></div>
-        </div>
-    </form>
+        </form>
+
+        <!-- Live Analysis Sidebar -->
+        <aside class="lg:col-span-4 mt-12 lg:mt-0 lg:sticky lg:top-32">
+            <div id="live-analysis-panel" class="bg-surface-container-high rounded-xl p-8 border border-primary/10 shadow-sm transition-all duration-300 opacity-0 transform translate-y-4 pointer-events-none">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="material-symbols-outlined text-primary">analytics</span>
+                    <h3 class="font-headline text-xl font-extrabold text-on-surface tracking-tight">Analisis Langsung</h3>
+                </div>
+
+                <div id="analysis-results" class="space-y-6">
+                    <p class="text-on-surface-variant text-sm italic">Pilih setidaknya satu gejala untuk memulai analisis real-time.</p>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-on-surface/5">
+                    <p class="text-[10px] uppercase tracking-widest font-bold text-on-surface-variant/60">Estimasi Berdasarkan Forward Chaining</p>
+                </div>
+            </div>
+        </aside>
+    </div>
 </main>
 
 <?php
@@ -106,5 +150,78 @@ function in_all_categories($id, $categories)
     foreach ($categories as $c) if (in_array($id, $c)) return true;
     return false;
 }
+?>
+<script>
+    const rules = <?= json_encode($rules_js) ?>;
+
+    function updateLiveAnalysis() {
+        const checkboxes = document.querySelectorAll('input[name="gejala[]"]:checked');
+        const selectedGejala = Array.from(checkboxes).map(cb => cb.value);
+        const panel = document.getElementById('live-analysis-panel');
+        const resultsContainer = document.getElementById('analysis-results');
+
+        if (selectedGejala.length === 0) {
+            panel.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+            resultsContainer.innerHTML = '<p class="text-on-surface-variant text-sm italic">Pilih setidaknya satu gejala untuk memulai analisis real-time.</p>';
+            return;
+        }
+
+        panel.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+
+        const diseaseConfidence = {};
+
+        for (const ruleId in rules) {
+            const rule = rules[ruleId];
+            const ruleGejala = rule.gejala;
+            const idPenyakit = rule.id_penyakit;
+
+            const intersection = ruleGejala.filter(g => selectedGejala.includes(g));
+            const matchCount = intersection.length;
+            const totalRuleGejala = ruleGejala.length;
+
+            if (matchCount > 0) {
+                const confidence = (matchCount / totalRuleGejala) * 100;
+                if (!diseaseConfidence[idPenyakit] || confidence > diseaseConfidence[idPenyakit].confidence) {
+                    diseaseConfidence[idPenyakit] = {
+                        nama: rule.nama_penyakit,
+                        confidence: confidence
+                    };
+                }
+            }
+        }
+
+        const sortedResults = Object.values(diseaseConfidence).sort((a, b) => b.confidence - a.confidence);
+
+        if (sortedResults.length === 0) {
+            resultsContainer.innerHTML = '<p class="text-on-surface-variant text-sm italic">Tidak ada penyakit yang cocok dengan gejala yang dipilih.</p>';
+        } else {
+            let html = '';
+            sortedResults.slice(0, 5).forEach(res => {
+                const confidence = res.confidence.toFixed(2);
+                html += `
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-end">
+                            <span class="font-bold text-on-surface leading-tight text-sm">${res.nama}</span>
+                            <span class="text-primary font-black text-sm">${confidence}%</span>
+                        </div>
+                        <div class="w-full bg-surface-container-lowest rounded-full h-2 overflow-hidden">
+                            <div class="bg-primary h-full transition-all duration-500" style="width: ${confidence}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+            resultsContainer.innerHTML = html;
+        }
+    }
+
+    document.querySelectorAll('input[name="gejala[]"]').forEach(cb => {
+        cb.addEventListener('change', updateLiveAnalysis);
+    });
+
+    // Run on load in case of browser back/refresh
+    window.addEventListener('load', updateLiveAnalysis);
+</script>
+
+<?php
 include 'includes/footer.php';
 ?>
