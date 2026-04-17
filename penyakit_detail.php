@@ -56,8 +56,12 @@ if (!$penyakit) {
 
         <aside class="lg:col-span-4">
             <div class="bg-surface-container-low rounded-xl overflow-hidden">
-                <div class="w-full h-48 bg-primary-container flex items-center justify-center">
-                    <span class="material-symbols-outlined text-6xl text-primary/30">medical_services</span>
+                <div class="w-full h-48 bg-primary-container flex items-center justify-center overflow-hidden">
+                    <?php if (!empty($penyakit['gambar']) && file_exists($penyakit['gambar'])): ?>
+                        <img src="<?= $penyakit['gambar'] ?>" alt="<?= htmlspecialchars($penyakit['nama']) ?>" class="w-full h-full object-cover">
+                    <?php else: ?>
+                        <span class="material-symbols-outlined text-6xl text-primary/30">medical_services</span>
+                    <?php endif; ?>
                 </div>
                 <div class="p-6">
                     <h3 class="font-bold text-on-surface mb-2">ID Penyakit</h3>
