@@ -32,7 +32,11 @@ $penyakit_list = get_all_penyakit($pdo);
         <?php foreach ($penyakit_list as $p): ?>
             <article class="disease-card flex flex-col bg-surface-container-low rounded-xl overflow-hidden shadow-[0_12px_32px_rgba(80,101,42,0.04)] group" data-name="<?= strtolower($p['nama']) ?>">
                 <div class="relative h-56 overflow-hidden bg-primary-container flex items-center justify-center">
-                    <span class="material-symbols-outlined text-6xl text-primary/30 group-hover:scale-110 transition-transform duration-500">medical_services</span>
+                    <?php if (!empty($p['gambar']) && file_exists($p['gambar'])): ?>
+                        <img src="<?= $p['gambar'] ?>" alt="<?= htmlspecialchars($p['nama']) ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <?php else: ?>
+                        <span class="material-symbols-outlined text-6xl text-primary/30 group-hover:scale-110 transition-transform duration-500">medical_services</span>
+                    <?php endif; ?>
                 </div>
                 <div class="p-6 flex flex-col flex-grow bg-surface-container-lowest mx-3 -mt-8 relative rounded-xl shadow-sm">
                     <h3 class="text-xl font-headline font-extrabold text-primary mb-2"><?= $p['nama'] ?></h3>
